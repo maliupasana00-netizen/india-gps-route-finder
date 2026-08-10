@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        India GPS Route Finder
+    </title>
+
+    <!-- Leaflet CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- =========================================
+         HEADER
+         ========================================= -->
+
+    <header>
+
+        <div class="logo">
+            🇮🇳
+        </div>
+
+        <h1>
+            India GPS Route Finder
+        </h1>
+
+        <p>
+            Find the shortest route between Indian cities
+            using Dijkstra's Algorithm
+        </p>
+
+        <div class="badge">
+            Graph Algorithms Mini Project
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================================
+         SEARCH
+         ========================================= -->
+
+    <section class="search-section">
+
+
+        <div class="input-box">
+
+            <label>
+                🟢 Starting City
+            </label>
+
+            <input
+                type="text"
+                id="startCity"
+                list="cityList"
+                placeholder="Search city..."
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <button
+            class="swap-btn"
+            onclick="swapCities()"
+        >
+            ⇄
+        </button>
+
+
+        <div class="input-box">
+
+            <label>
+                🔴 Destination City
+            </label>
+
+            <input
+                type="text"
+                id="endCity"
+                list="cityList"
+                placeholder="Search city..."
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <!-- CITY LIST -->
+
+        <datalist id="cityList"></datalist>
+
+
+        <button
+            class="find-btn"
+            onclick="findRoute()"
+        >
+
+            🔍 Find Shortest Route
+
+        </button>
+
+
+    </section>
+
+
+
+    <!-- =========================================
+         RESULT
+         ========================================= -->
+
+    <section class="result-card">
+
+        <h2>
+            🗺️ Route Result
+        </h2>
+
+
+        <div id="routeResult">
+
+            Select a starting city and destination.
+
+        </div>
+
+
+        <div id="distanceResult"></div>
+
+
+        <div id="directionResult"></div>
+
+
+        <div id="citiesResult"></div>
+
+
+    </section>
+
+
+
+    <!-- =========================================
+         ROUTE BOX
+         ========================================= -->
+
+    <section class="route-box">
+
+        <h2>
+            🚗 Shortest Route
+        </h2>
+
+
+        <div id="routePath">
+
+            <span class="empty">
+
+                Your route will appear here.
+
+            </span>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         MAP
+         ========================================= -->
+
+    <section class="map-section">
+
+        <div class="map-header">
+
+            <div>
+
+                <h2>
+                    🇮🇳 India Map
+                </h2>
+
+                <p>
+                    Click a city marker to see its details.
+                </p>
+
+            </div>
+
+
+            <div class="city-count">
+
+                📍
+                <span id="cityCount">
+                    0
+                </span>
+                Cities
+
+            </div>
+
+        </div>
+
+
+        <div id="map"></div>
+
+
+    </section>
+
+
+
+    <!-- =========================================
+         LEGEND
+         ========================================= -->
+
+    <section class="legend-section">
+
+        <h2>
+            📊 Graph Representation
+        </h2>
+
+
+        <div class="legend">
+
+            <div>
+
+                <span class="blue-dot"></span>
+
+                City / Node
+
+            </div>
+
+
+            <div>
+
+                <span class="grey-line"></span>
+
+                Graph Edge
+
+            </div>
+
+
+            <div>
+
+                <span class="green-line"></span>
+
+                Shortest Route
+
+            </div>
+
+
+            <div>
+
+                <span class="green-dot"></span>
+
+                Start
+
+            </div>
+
+
+            <div>
+
+                <span class="red-dot"></span>
+
+                Destination
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         DIJKSTRA EXPLANATION
+         ========================================= -->
+
+    <section class="algorithm-section">
+
+        <h2>
+            🧠 How Dijkstra's Algorithm Works
+        </h2>
+
+
+        <div class="steps">
+
+
+            <div class="step">
+
+                <div class="number">
+                    1
+                </div>
+
+                <h3>
+                    Start
+                </h3>
+
+                <p>
+                    Select source city
+                </p>
+
+            </div>
+
+
+            <div class="arrow">
+                →
+            </div>
+
+
+            <div class="step">
+
+                <div class="number">
+                    2
+                </div>
+
+                <h3>
+                    Explore
+                </h3>
+
+                <p>
+                    Check nearby cities
+                </p>
+
+            </div>
+
+
+            <div class="arrow">
+                →
+            </div>
+
+
+            <div class="step">
+
+                <div class="number">
+                    3
+                </div>
+
+                <h3>
+                    Compare
+                </h3>
+
+                <p>
+                    Compare distances
+                </p>
+
+            </div>
+
+
+            <div class="arrow">
+                →
+            </div>
+
+
+            <div class="step">
+
+                <div class="number">
+                    4
+                </div>
+
+                <h3>
+                    Shortest Path
+                </h3>
+
+                <p>
+                    Select minimum distance
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         PROJECT INFORMATION
+         ========================================= -->
+
+    <section class="info-section">
+
+
+        <div class="info-card">
+
+            <h3>
+                📚 Data Structure
+            </h3>
+
+            <p>
+                Weighted Graph
+                <br>
+                Adjacency List
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h3>
+                ⚙️ Algorithm
+            </h3>
+
+            <p>
+                Dijkstra's
+                <br>
+                Shortest Path Algorithm
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h3>
+                🇮🇳 Coverage
+            </h3>
+
+            <p>
+                Major Cities
+                <br>
+                Across India
+            </p>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =========================================
+         FOOTER
+         ========================================= -->
+
+    <footer>
+
+        <p>
+            🇮🇳 India GPS Route Finder
+        </p>
+
+        <p>
+            Research Project — Graph Algorithms
+        </p>
+
+        <p class="small">
+            Distances are approximate geographic
+            distances used for algorithm demonstration.
+        </p>
+
+    </footer>
+
+
+</div>
+
+
+
+<!-- Leaflet JavaScript -->
+
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+></script>
+
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
